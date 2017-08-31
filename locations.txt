@@ -1,0 +1,8 @@
+dots c:\Users\diego\Documents\Programation\asciidots
+desk c:\Users\diego\Desktop
+prog c:\Users\diego\Documents\Programation
+cmder c:\Users\diego\.cmder
+vim c:\Users\diego\.cmder\vendor\git-for-windows\usr\share\vim\vim80
+home C:\Users\diego
+ddot c:\Users\diego\Documents\Programation\asciidots2
+go c:\Users\diego\.cmder\bin
