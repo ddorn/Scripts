@@ -2,7 +2,4 @@
 .idea/
 __pycache__/
 
-.vscode/.ropeproject/config.py
-.vscode/.ropeproject/objectdb
-.vscode/settings.json
-.vscode/.ropeproject/config.py
+alias.bat
