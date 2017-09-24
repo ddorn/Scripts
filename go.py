@@ -6,7 +6,9 @@ It is a pair with go.bat, which is indispensable for this script to run.
 import os
 import click
 
-FILE = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'locations.txt')
+DIR = os.path.abspath(os.path.dirname(__file__))
+FILE = os.path.join(DIR, 'locations.txt')
+OUTFILE = os.path.join(DIR, 'temp.txt')
 
 def color(col, text):
     """Add the ansi esacape char aroud a string to print it colored"""
@@ -38,12 +40,13 @@ def add_mapping(shortcut, path):
 @click.command()
 @click.argument('to', required=False)
 @click.argument('add-location', default=None, required=False)
-def go(to: str = None, add_location: str = None):
+@click.option('--out-dir-file', default=OUTFILE, help='The file to print the path to go')
+def go(to: str = None, add_location: str = None, out_dir_file: str=None):
     """Go somewhere !"""
 
     if add_location:
         if ' ' in to:
-            print(color(1, 'The shortcut can not contain any space'))
+            red('The shortcut can not contain any space')
         else:
             add_location = os.path.abspath(add_location)
             add_mapping(to, add_location)
@@ -64,12 +67,14 @@ def go(to: str = None, add_location: str = None):
             print(string)
         return
 
+    # move to a new place
     try:
         path = locations[to]
     except KeyError:
         path = to
 
-    print(path)
+    with open(out_dir_file, 'w') as outtempfile:
+        print(path, file=outtempfile)
 
 
 if __name__ == '__main__':
