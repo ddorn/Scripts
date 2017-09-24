@@ -11,11 +11,6 @@ DIR = os.path.abspath(os.path.dirname(__file__))
 FILE = os.path.join(DIR, 'locations.txt')
 OUTFILE = os.path.join(DIR, 'temp.txt')
 
-def color(col, text):
-    """Add the ansi esacape char aroud a string to print it colored"""
-    return f'\033[0;3{col}m{text}\033[0m'
-
-
 def load_mapping():
     """Get a dict with the shortcuts as key and the path the point to as value."""
     with open(FILE, 'r') as file:
@@ -98,7 +93,22 @@ def go(to: str = None, add_location: str = None, out_dir_file: str=None):
     try:
         path = locations[to]
     except KeyError:
-        path = to
+        if os.path.exists(to):
+            path = to
+        else:
+            import difflib
+            possible = difflib.get_close_matches(to, locations.keys())
+
+            if not possible:
+                red('Can not find any correspondance...')
+                return
+            else:
+                print('Do you mean ', end='')
+                for loc, sep in zip(possible, [', ', ', ', ' or ', ''][-len(possible):]):
+                    blue(loc, end=sep)
+                print(' ?')
+                to = click.prompt('path', default=possible[0], type=click.Choice(possible))
+                path = locations[to]
 
     with open(out_dir_file, 'w') as outtempfile:
         print(path, file=outtempfile)
