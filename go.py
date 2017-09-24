@@ -36,8 +36,19 @@ def load_mapping():
 
 def add_mapping(shortcut, path):
     """Add a shortcut and a path to the list."""
-    with open(FILE, 'a+') as file:
-        file.write(f'{shortcut} {path}\n')
+    if not os.path.exists(FILE):
+        mapping = {shortcut: path}
+    else:
+        mapping = load_mapping()
+
+    save_mapping(mapping)
+
+def save_mapping(mapping: dict):
+    """Save a mapping of shortcuts and paths."""
+    with open(FILE, 'w') as file:
+        for shortcut, path in mapping.items():
+            file.write(f'{shortcut} {path}\n')
+
 @click.command()
 @click.argument('to', required=False)
 @click.argument('add-location', default=None, required=False)

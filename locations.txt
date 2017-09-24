@@ -4,5 +4,11 @@ prog c:\Users\diego\Documents\Programation
 cmder c:\Users\diego\.cmder
 vim c:\Users\diego\.cmder\vendor\git-for-windows\usr\share\vim\vim80
 home C:\Users\diego
-ddot c:\Users\diego\Documents\Programation\asciidots2
+ddot c:\Users\diego\Documents\Programation\AsciiDotsDebugger
 go c:\Users\diego\.cmder\bin
+python c:\Program Files\Python36
+pip c:\Program Files\Python36\Scripts
+nand c:\Users\diego\Desktop\nand2tetris\projects
+vsdots c:\Users\diego\Documents\Programation\vs-asciidots
+add c:\Users\diego\Documents\Programation\AsciiDotsDebugger
+vrac c:\Users\diego\Documents\Programation\VRAC
