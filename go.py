@@ -45,8 +45,13 @@ def add_mapping(shortcut, path):
 
 def save_mapping(mapping: dict):
     """Save a mapping of shortcuts and paths."""
+
+    # we sort the items by alphabetical order of path    
+    pairs = list(mapping.items())
+    pairs.sort(key=lambda x: (x[1]))
+
     with open(FILE, 'w') as file:
-        for shortcut, path in mapping.items():
+        for shortcut, path in pairs:
             file.write(f'{shortcut} {path}\n')
 
 @click.command()
@@ -56,6 +61,7 @@ def save_mapping(mapping: dict):
 def go(to: str = None, add_location: str = None, out_dir_file: str=None):
     """Go somewhere !"""
 
+    # we want to add a loc when a second param is specified
     if add_location:
         if ' ' in to:
             red('The shortcut can not contain any space')
@@ -73,8 +79,9 @@ def go(to: str = None, add_location: str = None, out_dir_file: str=None):
 
     locations = load_mapping()
 
-    # it was just 'go', so we show the possible locations
+    # it was just 'go', so we show all the possible locations
     if not to:
+        # we sort the items by alphabetical order of path
         pairs = list(locations.items())
         pairs.sort(key=lambda x: (x[1]))
 
@@ -82,8 +89,9 @@ def go(to: str = None, add_location: str = None, out_dir_file: str=None):
 
         for key, path in pairs:
             arrow = '-' * (max_len - len(key) + 2) + '>'
-            string = color(5, key) + ' ' +  color(6, arrow) + ' ' + path
-            print(string)
+            pink(key, end=' ')
+            blue(arrow, end=' ')
+            print(path)
         return
 
     # move to a new place

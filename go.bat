@@ -1,12 +1,17 @@
 @echo off
 
-py C:\Users\diego\.cmder\bin\go.py %* --out-dir-file=C:\Users\diego\.cmder\bin\temp.txt
+set "tmpfile=%TEMP%\go%RANDOM%.tmp"
 
-if exist C:\Users\diego\.cmder\bin\temp.txt ( 
+python C:\Users\diego\.cmder\bin\go.py --out-dir-file="%tmpfile%" %*
+
+if exist "%tmpfile%" (
+    :: THOSE LINES ARE ESSENTIAL.... BUT WHY ?????????????????? Fuck.
+    goto wtf
+    :wtf
     :: read the output dir to go 
-    set /p d=< C:\Users\diego\.cmder\bin\temp.txt
+    set /p d=<"%tmpfile%"
     :: delete the temp file so it doesn't interfere for the next go
-    del C:\Users\diego\.cmder\bin\temp.txt
+    del "%tmpfile%"
     :: Move !
     cd %d%
 )
