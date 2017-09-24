@@ -5,6 +5,7 @@ It is a pair with go.bat, which is indispensable for this script to run.
 
 import os
 import click
+from debugging import *
 
 DIR = os.path.abspath(os.path.dirname(__file__))
 FILE = os.path.join(DIR, 'locations.txt')
@@ -50,6 +51,13 @@ def go(to: str = None, add_location: str = None, out_dir_file: str=None):
         else:
             add_location = os.path.abspath(add_location)
             add_mapping(to, add_location)
+
+            # tell it worked
+            green('The mapping from ', end='')
+            blue(to, end='')
+            green(' to ', end='')
+            blue(add_location, end='')
+            green(' was succesfull.')
         return
 
     locations = load_mapping()
