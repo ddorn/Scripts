@@ -35,6 +35,7 @@ def add_mapping(shortcut, path):
         mapping = {shortcut: path}
     else:
         mapping = load_mapping()
+        mapping[shortcut] = path
 
     save_mapping(mapping)
 
