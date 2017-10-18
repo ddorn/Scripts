@@ -5,6 +5,7 @@ It is a pair with go.bat, which is indispensable for this script to run.
 
 import os
 import click
+import readline
 from debugging import *
 
 DIR = os.path.abspath(os.path.dirname(__file__))
@@ -49,6 +50,60 @@ def save_mapping(mapping: dict):
     with open(FILE, 'w') as file:
         for shortcut, path in pairs:
             file.write(f'{shortcut} {path}\n')
+
+def correct(to, locations):
+    import difflib
+    possible = list(set(list(locations.keys()) + next(os.walk('.'))[1]))
+    possible = difflib.get_close_matches(to, possible)
+
+    if not possible:
+        return
+
+    print('Do you mean ', end='')
+    for loc, sep in zip(possible, [', ', ', ', ' or ', ''][-len(possible):]):
+        blue(loc, end=sep)
+    print(' ?')
+    to = prompt_choice('path', possible, 0)
+    try:
+        return locations[to]
+    except KeyError:
+        return to
+
+def prompt_choice(prompt, choices, default: int = None):
+    """
+    Prompt a text name with autocompletion.
+
+    Choices is a list of possible texts.
+    Default is the index of the default possibility
+    """
+
+    def complete(text: str, state):
+        return ([c for c in choices if c.startswith(text)] + [None,])[state]
+
+    readline.set_completer_delims(' \t\n;')
+    readline.parse_and_bind("tab: complete")
+    readline.set_completer(complete)
+
+    good = False
+    while not good:
+        if default is not None:
+            r = input('%s [%r]: ' % (prompt, choices[default]))
+        else:
+            r = input('%s: ' % prompt)
+
+        if default is not None:
+            r = r or choices[default]
+
+        if r in choices:
+            good = True
+        else:
+            print("%s is not a valid choice." % r)
+
+    # remove the autocompletion before quitting for future input()
+    readline.parse_and_bind('tab: self-insert')
+
+    return r
+    
 
 @click.command()
 @click.argument('to', required=False)
@@ -97,19 +152,10 @@ def go(to: str = None, add_location: str = None, out_dir_file: str=None):
         if os.path.exists(to):
             path = to
         else:
-            import difflib
-            possible = difflib.get_close_matches(to, locations.keys())
-
-            if not possible:
+            path = correct(to, locations)
+            if not path:
                 red('Can not find any correspondance...')
                 return
-            else:
-                print('Do you mean ', end='')
-                for loc, sep in zip(possible, [', ', ', ', ' or ', ''][-len(possible):]):
-                    blue(loc, end=sep)
-                print(' ?')
-                to = click.prompt('path', default=possible[0], type=click.Choice(possible))
-                path = locations[to]
 
     with open(out_dir_file, 'w') as outtempfile:
         print(path, file=outtempfile)

@@ -9,7 +9,10 @@ nand c:\Users\diego\Desktop\nand2tetris\projects
 prog c:\Users\diego\Documents\Programation
 ddot c:\Users\diego\Documents\Programation\AsciiDotsDebugger
 add c:\Users\diego\Documents\Programation\AsciiDotsDebugger
+adit c:\Users\diego\Documents\Programation\Asciiditor
+exami c:\Users\diego\Documents\Programation\Exami
 vrac c:\Users\diego\Documents\Programation\VRAC
 docs c:\Users\diego\Documents\Programation\asciidocs
 dots c:\Users\diego\Documents\Programation\asciidots
+d c:\Users\diego\Documents\Programation\asciidots
 vsdots c:\Users\diego\Documents\Programation\vs-asciidots
