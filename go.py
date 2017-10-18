@@ -103,14 +103,29 @@ def prompt_choice(prompt, choices, default: int = None):
     readline.parse_and_bind('tab: self-insert')
 
     return r
-    
+
 
 @click.command()
 @click.argument('to', required=False)
 @click.argument('add-location', default=None, required=False)
 @click.option('--out-dir-file', default=OUTFILE, help='The file to print the path to go')
-def go(to: str = None, add_location: str = None, out_dir_file: str=None):
+@click.option('--delete', '-d', is_flag=True)
+def go(to: str = None, add_location: str = None, out_dir_file: str=None, delete: bool=False):
     """Go somewhere !"""
+
+    locations = load_mapping()
+
+    # we want to remove a shortcut
+    if delete:
+        try:
+            del locations[to]
+            save_mapping(locations)
+            print('The shortcut ', end='')
+            blue(to, end=' ')
+            print('was deleted.')
+        except KeyError:
+            red('No such shortcut to delete (%s)' % to)
+        return
 
     # we want to add a loc when a second param is specified
     if add_location:
@@ -127,8 +142,6 @@ def go(to: str = None, add_location: str = None, out_dir_file: str=None):
             blue(add_location, end='')
             green(' was succesfull.')
         return
-
-    locations = load_mapping()
 
     # it was just 'go', so we show all the possible locations
     if not to:
