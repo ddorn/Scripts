@@ -2,7 +2,7 @@
 
 set "tmpfile=%TEMP%\go%RANDOM%.tmp"
 
-python C:\Users\diego\.cmder\bin\go.py --out-dir-file="%tmpfile%" %*
+py C:\Users\diego\.cmder\bin\go.py --out-dir-file="%tmpfile%" %*
 
 if exist "%tmpfile%" (
     :: THOSE LINES ARE ESSENTIAL.... BUT WHY ?????????????????? Fuck.
